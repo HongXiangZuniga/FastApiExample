@@ -1,13 +1,11 @@
 This project is an example of a simple API built with the FastAPI framework. It includes the following endpoints:
 
  ```
-Endpoints:
-```
 GET /user/id/<idUser> <get user by id>
 GET /user/field/:value <get users by field and value>
 ```
 
-The struct of mongo data is:
+This project uses a Docker Compose with MongoDB, and the information is hosted internally in this repository, the struct of mongo data is:
 
 ```json
 {
@@ -30,10 +28,10 @@ LOGGER_LEVEL=<"DEBUG","INFO","WARNING","ERROR","CRITICAL"> // Default="INFO"
 
 command for run:
 ```
- make run
+make run
 ```
 
 command for installer:
  ```
-    make install
+ make install
  ```
