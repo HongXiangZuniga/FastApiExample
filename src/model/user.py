@@ -1,7 +1,11 @@
 from pymongo import MongoClient
+from pymongo.errors import WriteError
+from pymongo import DESCENDING
+
 from dotenv import load_dotenv
 import os
 import logging
+from datetime import datetime
 
 class userModel:
     client = None #Client to db
@@ -18,7 +22,18 @@ class userModel:
         except ValueError:
             self.logger.error(ValueError)
             return None
-        
+    
+    def postUser(self,name:str,email:str,country:str,age:int):
+        try:
+            lastUser = self.collection.find_one({}, sort=[("id", DESCENDING)])
+            lastId = lastUser["id"]
+            now = datetime.now()
+            user = { "id":lastId+1,"name":name, "age": age, "country":country,"entryDate": now }
+            self.collection.insert_one(user)
+            del user["_id"]
+            return user
+        except WriteError as e:
+            logging.error("Error:", e)
     
     def findUserByField(self,field:str,value):
         try:
