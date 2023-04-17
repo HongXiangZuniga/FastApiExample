@@ -3,6 +3,7 @@ This project is an example of a simple API built with the FastAPI framework. It 
  ```
 GET /user/id/<idUser> <get user by id>
 GET /user/field/:value <get users by field and value>
+POST /user/ <{"name","email","age","country",}>
 ```
 
 This project uses a Docker Compose with MongoDB, and the information is hosted internally in this repository, the struct of mongo data is:

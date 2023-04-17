@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Request,Response
 from fastapi.responses import JSONResponse
 from src.model.user import userModel
 from src.controler.user import usersController
+from src.controler.user import User
 from dotenv import load_dotenv
 import json 
 import logging
@@ -38,24 +39,30 @@ usersController = usersController(userModel)
 
 @app.get("/user/{user_id}")
 async def getUser(user_id: int):
-    try:
-        user = usersController.getUserById(user_id)
-        response = json.loads(user)
-        return JSONResponse(content=response,status_code=200)
-    except ValueError:
-        logger.error(ValueError)
-        return {"user": None}
+    user = usersController.getUserById(user_id)
+    response = json.loads(user)
+    return JSONResponse(content=response,status_code=200)
 
 @app.get("/user/{field}/{value}")
 async def search(field,value):
-    try:
-        if field == "age":
-            value = int(value)
-        users = usersController.findUserByField(field,value)
-        if users == None:
-            return {"users": None}
-        response = json.loads(users)
-        return  JSONResponse(content={"users": response},status_code=200)
-    except ValueError:
-        logger.error(ValueError)
+    if field == "age":
+        value = int(value)
+    users = usersController.findUserByField(field,value)
+    if users == None:
         return {"users": None}
+    response = json.loads(users)
+    return  JSONResponse(content={"users": response},status_code=200)
+
+@app.post("/user")
+async def create_item(request: Request):
+    body = await request.json()
+    if not("name" in body or "age" in body or "country" in body or "email" in body):
+        return JSONResponse(content={"error":"Missing information, required fields are name, email, country and Age"},status_code=404)
+    User.age = body["age"]
+    User.name = body["name"]
+    User.country = body["country"]
+    User.email = body["email"]
+    result = usersController.postUser(User)
+    return result
+
+    
