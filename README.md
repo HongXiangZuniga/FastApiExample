@@ -7,7 +7,7 @@ GET /user/id/<idUser> <get user by id>
 GET /user/field/:value <get users by field and value>
 ```
 
-The struct of mongo data is:
+This project uses a Docker Compose with MongoDB, and the information is hosted internally in this repository, the struct of mongo data is:
 
 ```json
 {
