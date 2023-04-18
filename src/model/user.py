@@ -51,6 +51,10 @@ class userModel:
             self.collection.update_one({"id": id}, {"$set": update})
         except WriteError as e:
             logging.error("Error:", e)
+    
+    def deleteUser(self, id:int):
+        return self.collection.delete_one({"id": id})
+   
 
     def findUserByField(self, field: str, value):
         try:

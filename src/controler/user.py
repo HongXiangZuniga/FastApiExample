@@ -37,6 +37,13 @@ class usersController:
         if not hasattr(User, 'age'):
             User.age = None
         return self.model.putUser(id, User.name, User.email, User.country, User.age)
+    
+    def deleteUser(self,id):
+        if self.model.deleteUser(id).raw_result["n"] != 0:
+            return True
+        else:
+            return False
+    
 
     def findUserByField(self, field: str, value):
         try:
