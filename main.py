@@ -82,7 +82,7 @@ async def updateUser(user_id: int, request: Request, response: Response):
     response.status_code = 204
 
 @app.delete("/user/{user_id}")
-async def create_item(user_id: int, response: Response):   
+async def deleteUser(user_id: int, response: Response):   
     if  usersController.deleteUser(user_id):
         response.status_code = 204
         return response
