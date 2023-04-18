@@ -44,7 +44,7 @@ async def getUser(user_id: int):
 
 
 @app.get("/user/{field}/{value}")
-async def search(field, value):
+async def searchUser(field, value):
     if field == "age":
         value = int(value)
     users = usersController.findUserByField(field, value)
@@ -55,7 +55,7 @@ async def search(field, value):
 
 
 @app.post("/user")
-async def create_item(request: Request):
+async def createUser(request: Request):
     body = await request.json()
     if not ("name" in body or "age" in body or "country" in body or "email" in body):
         return JSONResponse(content={"error": "Missing information, required fields are name, email, country and Age"}, status_code=404)
@@ -68,7 +68,7 @@ async def create_item(request: Request):
 
 
 @app.put("/user/{user_id}")
-async def create_item(user_id: int, request: Request, response: Response):
+async def updateUser(user_id: int, request: Request, response: Response):
     body = await request.json()
     if ("name" in body):
         User.name = body["name"]
@@ -80,3 +80,12 @@ async def create_item(user_id: int, request: Request, response: Response):
         User.email = body["email"]
     usersController.putUser(user_id, User)
     response.status_code = 204
+
+@app.delete("/user/{user_id}")
+async def deleteUser(user_id: int, response: Response):   
+    if  usersController.deleteUser(user_id):
+        response.status_code = 204
+        return response
+    else:
+        response.status_code = 404
+
